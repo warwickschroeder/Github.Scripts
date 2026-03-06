@@ -69,7 +69,12 @@ query {
               url
               createdAt
               updatedAt
-              comments { totalCount }
+              reactions { totalCount }
+              comments(first: 100) {
+                totalCount
+                nodes { reactions { totalCount } }
+              }
+              labels(first: 10) { nodes { name } }
               repository {
                 nameWithOwner
               }
@@ -161,14 +166,25 @@ $results = $inboxIssues |
 
         $opened = ([datetime]$issue.createdAt).ToString("yyyy-MM-dd")
 
+        $commentReactions = ($issue.comments.nodes | ForEach-Object { $_.reactions.totalCount } | Measure-Object -Sum).Sum
+        $totalReactions = $issue.reactions.totalCount + $commentReactions
+
+        $daysInInbox = if ($dateAdded) { ([datetime]::Today - [datetime]$dateAdded).Days } else { "" }
+        $ageInDays = ([datetime]::Today - [datetime]$issue.createdAt).Days
+        $labels = ($issue.labels.nodes | ForEach-Object { $_.name }) -join ", "
+
         $obj = [ordered]@{
-            Repo         = $issue.repository.nameWithOwner
-            "Issue #"    = $issue.number
-            Title        = $issue.title
-            "Opened"     = $opened
-            "Date Added" = $dateAdded
-            "Comments"   = $issue.comments.totalCount
-            "Last Edit"  = $updated
+            Repo           = $issue.repository.nameWithOwner
+            "Issue #"      = $issue.number
+            Title          = $issue.title
+            "Opened"       = $opened
+            "Date Added"   = $dateAdded
+            "Age (days)"   = $ageInDays
+            "Days in Inbox"= $daysInInbox
+            "Comments"     = $issue.comments.totalCount
+            "Reactions"    = $totalReactions
+            "Last Edit"    = $updated
+            "Labels"       = $labels
         }
         if ($ExcludeTeam) {
             $obj["Last External Edit"] = $lastExternal

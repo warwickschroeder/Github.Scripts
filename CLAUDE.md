@@ -8,16 +8,16 @@ A collection of PowerShell scripts for automating GitHub operations via the `gh`
 
 ## Prerequisites
 
-- **gh CLI**: Install with `winget install GitHub.cli`, then authenticate with `gh auth login`
+- **gh CLI**: Install with `winget install GitHub.cli`, then authenticate with the required scopes: `gh auth login --scopes read:project,read:org`
 - **PowerShell**: Scripts use PowerShell syntax (`.ps1` files)
 
 ## Running Scripts
 
 ```powershell
 # List issues in a GitHub Projects V2 board column
-.\get-issues.ps1 -Org "your-org" -ProjectNumber 1
-.\get-issues.ps1 -Org "your-org" -ProjectNumber 1 -ExcludeTeam "my-team"
-.\get-issues.ps1 -Org "your-org" -ProjectNumber 1 -CsvPath "inbox.csv"
+.\get-issues-on-project-board.ps1 -Org "your-org" -ProjectNumber 1
+.\get-issues-on-project-board.ps1 -Org "your-org" -ProjectNumber 1 -ExcludeTeam "my-team"
+.\get-issues-on-project-board.ps1 -Org "your-org" -ProjectNumber 1 -CsvPath "inbox.csv"
 ```
 
 ## Conventions

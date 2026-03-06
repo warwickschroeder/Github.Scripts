@@ -4,29 +4,35 @@ A collection of PowerShell scripts for automating GitHub operations via the [`gh
 
 ## Prerequisites
 
-- **gh CLI** — install with `winget install GitHub.cli`, then authenticate with `gh auth login`
+- **gh CLI** — install with `winget install GitHub.cli`, then authenticate with the required scopes:
+
+  ```powershell
+  gh auth login --scopes read:project,read:org
+  ```
 
 ## Scripts
 
-### get-issues.ps1
+### get-issues-on-project-board.ps1
 
 Lists all issues in a specific column of a GitHub Projects V2 board. Supports filtering out activity from a specific team, limiting results, and exporting to CSV.
 
+Output columns: `Repo`, `Issue #`, `Title`, `Opened`, `Date Added`, `Age (days)`, `Days in Inbox`, `Comments`, `Reactions`, `Last Edit`, `Labels`, `Last External Edit` (when `-ExcludeTeam` is used), `URL`.
+
 ```powershell
 # Basic usage — list issues in the "Inbox" column
-.\get-issues.ps1 -Org "your-org" -ProjectNumber 1
+.\get-issues-on-project-board.ps1 -Org "your-org" -ProjectNumber 1
 
 # Exclude a team's activity and show last external edit date
-.\get-issues.ps1 -Org "your-org" -ProjectNumber 1 -ExcludeTeam "my-team"
+.\get-issues-on-project-board.ps1 -Org "your-org" -ProjectNumber 1 -ExcludeTeam "my-team"
 
 # Export results to CSV
-.\get-issues.ps1 -Org "your-org" -ProjectNumber 1 -CsvPath "inbox.csv"
+.\get-issues-on-project-board.ps1 -Org "your-org" -ProjectNumber 1 -CsvPath "inbox.csv"
 
 # Customise the column and status field names
-.\get-issues.ps1 -Org "your-org" -ProjectNumber 1 -ColumnName "Triage" -StatusFieldName "Status"
+.\get-issues-on-project-board.ps1 -Org "your-org" -ProjectNumber 1 -ColumnName "Triage" -StatusFieldName "Status"
 
 # Limit the number of results
-.\get-issues.ps1 -Org "your-org" -ProjectNumber 1 -Limit 10
+.\get-issues-on-project-board.ps1 -Org "your-org" -ProjectNumber 1 -Limit 10
 ```
 
 | Parameter          | Required | Default   | Description                                                     |
