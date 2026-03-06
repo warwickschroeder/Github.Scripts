@@ -7,7 +7,7 @@ A collection of PowerShell scripts for automating GitHub operations via the [`gh
 - **gh CLI** — install with `winget install GitHub.cli`, then authenticate with the required scopes:
 
   ```powershell
-  gh auth login --scopes read:project,read:org
+  gh auth login --scopes read:project,read:org,project
   ```
 
 ## Scripts
@@ -44,3 +44,29 @@ Output columns: `Repo`, `Issue #`, `Title`, `Opened`, `Date Added`, `Age (days)`
 | `-ExcludeTeam`     | No       | —         | Team slug; excludes members' activity from "Last External Edit" |
 | `-CsvPath`         | No       | —         | Path to export results as CSV                                   |
 | `-Limit`           | No       | `0` (all) | Max number of issues to return                                  |
+
+### set-project-board-fields.ps1
+
+Updates GitHub Projects V2 fields for issues listed in a CSV file. The `-FieldMap` parameter maps CSV column names to project board field names. Supports text, number, date, and single-select field types.
+
+```powershell
+# Update a single field
+.\set-project-board-fields.ps1 -Org "your-org" -ProjectNumber 1 -CsvPath "issues.csv" `
+    -FieldMap @{ "Comments" = "My Comments Field" }
+
+# Map multiple CSV columns to board fields
+.\set-project-board-fields.ps1 -Org "your-org" -ProjectNumber 1 -CsvPath "issues.csv" `
+    -FieldMap @{ "Reactions" = "Engagement"; "Age (days)" = "Issue Age" }
+
+# Test with a limited number of rows first
+.\set-project-board-fields.ps1 -Org "your-org" -ProjectNumber 1 -CsvPath "issues.csv" `
+    -FieldMap @{ "Comments" = "My Comments Field" } -Limit 3
+```
+
+| Parameter        | Required | Default   | Description                                             |
+| ---------------- | -------- | --------- | ------------------------------------------------------- |
+| `-Org`           | Yes      | —         | GitHub organisation login                               |
+| `-ProjectNumber` | Yes      | —         | Projects V2 board number                                |
+| `-CsvPath`       | Yes      | —         | Path to the input CSV file (must have a `URL` column)   |
+| `-FieldMap`      | Yes      | —         | Hashtable mapping CSV column names to board field names |
+| `-Limit`         | No       | `0` (all) | Max number of CSV rows to process                       |

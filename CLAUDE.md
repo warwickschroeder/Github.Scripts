@@ -8,7 +8,7 @@ A collection of PowerShell scripts for automating GitHub operations via the `gh`
 
 ## Prerequisites
 
-- **gh CLI**: Install with `winget install GitHub.cli`, then authenticate with the required scopes: `gh auth login --scopes read:project,read:org`
+- **gh CLI**: Install with `winget install GitHub.cli`, then authenticate with the required scopes: `gh auth login --scopes read:project,read:org,project`
 - **PowerShell**: Scripts use PowerShell syntax (`.ps1` files)
 
 ## Running Scripts
