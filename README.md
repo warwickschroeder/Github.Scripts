@@ -16,7 +16,23 @@ A collection of PowerShell scripts for automating GitHub operations via the [`gh
 
 Lists all issues in a specific column of a GitHub Projects V2 board. Supports filtering out activity from a specific team, limiting results, and exporting to CSV.
 
-Output columns: `Repo`, `Issue #`, `Title`, `Opened`, `Date Added`, `Age (days)`, `Days in Inbox`, `Comments`, `Reactions`, `Last Edit`, `Labels`, `Last External Edit` (when `-ExcludeTeam` is used), `URL`.
+**Output fields:**
+
+| Field                | Description                                                                                       |
+| -------------------- | ------------------------------------------------------------------------------------------------- |
+| `Repo`               | Repository name in `owner/repo` format                                                            |
+| `Issue #`            | Issue number                                                                                      |
+| `Title`              | Issue title                                                                                       |
+| `Opened`             | Date the issue was created (`yyyy-MM-dd`)                                                         |
+| `Date Added`         | Date the issue was added to the project board (`yyyy-MM-dd`), from the board's "Date Added" field |
+| `Age (days)`         | Number of days since the issue was opened                                                         |
+| `Days in Inbox`      | Number of days since the issue was added to the board column                                      |
+| `Comments`           | Total number of comments on the issue                                                             |
+| `Reactions`          | Total reactions across the issue body and all its comments                                        |
+| `Last Edit`          | Date of the most recent update to the issue (`yyyy-MM-dd`)                                        |
+| `Labels`             | Comma-separated list of labels applied to the issue                                               |
+| `Last External Edit` | Date of the most recent timeline event from someone outside `-ExcludeTeam` (only with that flag)  |
+| `URL`                | Full URL to the issue on GitHub                                                                   |
 
 ```powershell
 # Basic usage — list issues in the "Inbox" column
